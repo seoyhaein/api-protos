@@ -1,0 +1,68 @@
+syntax = "proto3";
+
+package protos;
+option go_package = "github.com/seoyhaein/tori/protos";
+
+import "google/protobuf/timestamp.proto";
+
+//////////////////////////////////////
+// 폴더 정보 저장 관련 메시지 및 서비스
+//////////////////////////////////////
+
+// (옵션) 클라이언트가 강제로 동기화를 요청할 때 사용 (필요 없으면 빈 메시지로 대체 가능)
+message SyncFoldersInfoRequest {
+  bool force = 1; // force update flag, 기본값 false
+}
+
+// 동기화 작업 결과를 응답
+message SyncFoldersInfoResponse {
+  // 업데이트가 이루어졌으면 true, 그렇지 않으면 false
+  bool updated = 1;
+}
+
+// DBApisService 대신 SyncFoldersInfo 라는 이름의 서비스를 정의
+service DBApisService {
+  // 클라이언트의 요청에 따라 서버의 폴더와 DB를 비교한 후, 업데이트가 필요한 경우 수행하고 결과를 반환
+  rpc SyncFoldersInfo(SyncFoldersInfoRequest) returns (SyncFoldersInfoResponse);
+}
+
+//////////////////////////////////////
+// 파일 블록 데이터 관련 메시지들
+//////////////////////////////////////
+
+// 단일 파일 블럭을 나타내는 메시지
+message FileBlock {
+  string block_id = 1;                // 블록을 구분하기 위한 고유 ID (예: 파일 경로)
+  repeated string column_headers = 2; // 컬럼 이름들
+  repeated Row rows = 3;              // 행 데이터
+}
+
+// 하나의 행(row)을 나타내며, 행 번호와 헤더-값 매핑을 포함
+message Row {
+  int32 row_number = 1;                 // 행 번호
+  map<string, string> cell_columns = 2; // 헤더 이름과 셀 값의 매핑
+}
+
+// 여러 파일 블럭을 묶어서 나타내는 메시지
+message DataBlock {
+  google.protobuf.Timestamp updated_at = 1;  // 최종 업데이트 시간
+  repeated FileBlock blocks = 2;           // 파일 블럭 리스트
+}
+
+// 클라이언트가 현재 가지고 있는 데이터의 업데이트 타임스탬프를 포함하는 요청 메시지
+message GetDataBlockRequest {
+  // 클라이언트가 마지막으로 받은 데이터의 updated_at 값
+  google.protobuf.Timestamp current_updated_at = 1;
+}
+
+// 서버가 응답으로 DataBlockData 를 포함하여 보내는 메시지
+message GetDataBlockResponse {
+  DataBlock data = 1;
+  // 예를 들어, 데이터가 최신이면 no_update 플래그를 true 로 설정할 수도 있음
+  bool no_update = 2;
+}
+
+// DataBlockService: 클라이언트의 요청에 대해 DataBlockData 를 반환하는 서비스
+service DataBlockService {
+  rpc GetDataBlock(GetDataBlockRequest) returns (GetDataBlockResponse);
+}

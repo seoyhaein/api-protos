@@ -1,0 +1,24 @@
+syntax = "proto3";
+
+package syncfolders.v1;
+option go_package = "github.com/seoyhaein/api-protos/protos/syncfolders/v1;syncfoldersv1";
+
+//////////////////////////////////////
+// 폴더 정보 저장 관련 메시지 및 서비스
+//////////////////////////////////////
+
+// (옵션) 클라이언트가 강제로 동기화를 요청할 때 사용 (필요 없으면 빈 메시지로 대체 가능)
+message SyncFoldersRequest {
+  bool force = 1; // force update flag, 기본값 false
+}
+
+// 동기화 작업 결과를 응답
+message SyncFoldersResponse {
+  // 업데이트가 이루어졌으면 true, 그렇지 않으면 false
+  bool updated = 1;
+}
+
+service SyncFoldersService {
+  // 클라이언트의 요청에 따라 서버의 폴더와 DB를 비교한 후, 업데이트가 필요한 경우 수행하고 결과를 반환
+  rpc SyncFolders(SyncFoldersRequest) returns (SyncFoldersResponse);
+}

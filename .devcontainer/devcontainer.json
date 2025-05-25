@@ -1,0 +1,39 @@
+{
+  "name": "Proto Dev Container",
+  "build": {
+    "dockerfile": "Dockerfile",
+    "context": ".."
+  },
+  "workspaceFolder": "/app",
+
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "bufbuild.buf",
+        "zxh404.vscode-proto3",
+        "golang.go",                  // Go 언어 지원
+        "ms-azuretools.vscode-docker",// Docker 편집 지원
+        "ms-dotnettools.csharp"       // C# 언어 지원
+      ],
+      "settings": {
+        "editor.snippetSuggestions": "top",
+        "gopls.usePlaceholders": true,
+
+        "[proto]": {
+          "editor.defaultFormatter": "bufbuild.buf",
+          "editor.formatOnSave": true // .proto 파일 저장 시 자동 포맷
+        },
+        "[go]": { // Go 파일에 대한 설정
+          "editor.defaultFormatter": "golang.go",
+          "editor.formatOnSave": true
+        },
+        "[csharp]": {
+          "editor.defaultFormatter": "ms-dotnettools.csharp",
+          "editor.formatOnSave": true
+        }
+      }
+    }
+  },
+
+  "postCreateCommand": "buf --version"
+}

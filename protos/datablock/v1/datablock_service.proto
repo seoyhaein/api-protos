@@ -1,0 +1,4 @@
+syntax = "proto3";
+
+package datablock.v1;
+option go_package = "github.com/seoyhaein/api-protos/protos/datablock/v1;datablockv1";
