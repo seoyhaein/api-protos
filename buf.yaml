@@ -1,0 +1,18 @@
+version: v2
+
+# 1) 로컬 .proto 파일이 모여 있는 디렉터리(여러 개 가능)를 modules로 선언
+modules:
+  - path: protos                # proto 파일들이 들어 있는 디렉터리
+    name: github.com/seoyhaein/api-protos  # (선택) 이 모듈의 BSR 경로
+
+# 2) 외부 의존성(googleapis)을 deps로 선언
+deps:
+  - buf.build/googleapis/googleapis
+
+# 3) lint·breaking 기본 규칙
+lint:
+  use:
+    - STANDARD
+breaking:
+  use:
+    - FILE

@@ -1,0 +1,43 @@
+version: v2
+
+# Clean mode: deletes output dirs before generation
+clean: true
+
+# Managed Mode: 자동으로 go_package, csharp_namespace 등을 설정
+managed:
+  enabled: true
+  disable:
+    # 구글 API Protos는 자동 관리 제외
+    - module: buf.build/googleapis/googleapis
+  override:
+    # Go 코드 기본 출력 경로 설정
+    - file_option: go_package_prefix
+      value: github.com/seoyhaein/api-protos/gen/go
+    # C# 네임스페이스 기본값 설정
+    - file_option: csharp_namespace
+      value: SeoyHaeIn.ApiProtos.Gen.CSharp
+
+# 플러그인 정의
+plugins:
+  # Go 메시지 타입 생성
+  - remote: buf.build/protocolbuffers/go:v1.33.0
+    out: gen/go
+    opt:
+      - paths=source_relative
+
+  # Go gRPC 서비스 스텁 생성
+  - local: protoc-gen-go-grpc
+    out: gen/go
+    opt:
+      - paths=source_relative
+
+  # C# 코드 생성 (protoc 내장 플러그인)
+  - protoc_builtin: csharp
+    protoc_path: /usr/local/bin/protoc
+    out: gen/csharp
+
+# 입력 디렉터리 설정 (필요한 모듈별로 추가)
+inputs:
+  - directory: protos/datablock/v1
+  # 다른 모듈이 있으면 여기에 추가
+  # - directory: protos/anothermodule/v1
