@@ -1,4 +1,61 @@
 syntax = "proto3";
 
 package datablock.v1;
+
 option go_package = "github.com/seoyhaein/api-protos/protos/datablock/v1;datablockv1";
+
+import "google/protobuf/timestamp.proto";
+import "google/protobuf/empty.proto";
+import "google/api/field_behavior.proto";
+
+//////////////////////////////////////
+// 1) 데이터 구조 메시지
+//////////////////////////////////////
+
+// CSV나 로그 등 파일의 일부분(row 집합)을 표현
+message FileBlock {
+  string block_id        = 1;             // 블록 식별자 (예: 파일 경로 해시)
+  repeated string column_headers = 2;     // 헤더 리스트
+  repeated Row    rows           = 3;     // 행 목록
+}
+
+// 한 행(row) 데이터: 번호 + 헤더→값 매핑
+message Row {
+  int32 row_number = 1;                   // 1부터 시작하는 행 번호
+  map<string, string> cells = 2;          // "헤더 이름"→"셀 값"
+}
+
+// 여러 FileBlock 을 묶은 전체 단위
+message DataBlock {
+  google.protobuf.Timestamp updated_at = 1;  // 서버 최종 수정 시각
+  repeated FileBlock blocks         = 2;    // 포함된 파일 블록들
+}
+
+//////////////////////////////////////
+// 2) Fetch API 메시지
+//////////////////////////////////////
+
+// 조건부 Fetch 요청: 이전 수신 시각을 제공하면,
+// 그 이후 변경분이 있을 때만 DataBlock을 반환
+message FetchDataBlockRequest {
+  // 제공하지 않으면 항상 최신 DataBlock을 반환
+  google.protobuf.Timestamp if_modified_since = 1 [(google.api.field_behavior) = OPTIONAL];
+}
+
+// 서버는 데이터가 변경되었을 때만 data_block 필드를 채워서 응답.
+// 변경이 없으면 no_update 필드가 true로 설정됨
+message FetchDataBlockResponse {
+  oneof payload {
+    DataBlock data_block = 1;  // 변경된 전체 DataBlock
+    google.protobuf.Empty no_update = 2;  // 변경 없음 표시
+  }
+}
+
+//////////////////////////////////////
+// 3) 서비스 정의
+//////////////////////////////////////
+
+service DataBlockService {
+  // 이전 수신 시각 이후 변경된 DataBlock 을 가져옴
+  rpc FetchDataBlock(FetchDataBlockRequest) returns (FetchDataBlockResponse);
+}
