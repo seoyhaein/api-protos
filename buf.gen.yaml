@@ -11,7 +11,7 @@ managed:
     - module: buf.build/googleapis/googleapis
     # protos/datablock/v1 경로의 .proto 파일들에 대해서는
     # go_package 파일 옵션에 대한 관리 모드 수정을 비활성화
-    - path: protos/datablock/v1
+    - path: protos/datablock/ichthys/v1
       file_option: go_package
   override:
     # Go 코드 기본 출력 경로 설정
@@ -30,15 +30,15 @@ plugins:
       - paths=source_relative
 
   # Go gRPC 서비스 스텁 생성
-  - local: buf.build/grpc/go:v1.5.1
+  - remote: buf.build/grpc/go:v1.5.1
     out: gen/go
     opt:
       - paths=source_relative
 
   # C# 코드 생성 (protoc 내장 플러그인)
-  - protoc_builtin: csharp
-    protoc_path: /usr/local/bin/protoc
-    out: gen/csharp
+  #- protoc_builtin: csharp
+  #  protoc_path: /usr/local/bin/protoc
+  #  out: gen/csharp
 
 # 입력 디렉터리 설정 (필요한 모듈별로 추가)
 inputs:
