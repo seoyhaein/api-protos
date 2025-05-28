@@ -1,9 +1,9 @@
 version: v2
 
 modules:
-  - path: protos/datablock/v1                
+  - path: protos/datablock                
     name: buf.build/seoyhaein/datablock 
-  - path: protos/syncfolders/v1 
+  - path: protos/syncfolders
     name: buf.build/seoyhaein/syncfolders 
   
 # 외부 의존성(googleapis)을 deps로 선언

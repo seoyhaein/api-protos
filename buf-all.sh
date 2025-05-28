@@ -22,9 +22,9 @@ buf dep update
 OUT_DIR="./gen"
 mkdir -p "$OUT_DIR"
 echo "[4/6] Generating full descriptor set…"
+
 buf build \
-  --include-imports \
-  --include-source-info \
+  --as-file-descriptor-set \
   --output "$OUT_DIR/protoset-full.bin"
 
 # 5) (선택) Go/C# 코드 생성

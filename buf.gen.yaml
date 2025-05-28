@@ -42,6 +42,6 @@ plugins:
 
 # 입력 디렉터리 설정 (필요한 모듈별로 추가)
 inputs:
-  - directory: protos/datablock/v1
-  - directory: protos/syncfolders/v1
+  - directory: protos/datablock/ichthys/v1
+  - directory: protos/syncfolders/ichthys/v1
 

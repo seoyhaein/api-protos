@@ -18,6 +18,6 @@ buf config ls-modules --format path
 buf push
 
 ```
-
+- F1 누르면 buf lint 실행.
 
 - check https://buf.build/seoyhaein
