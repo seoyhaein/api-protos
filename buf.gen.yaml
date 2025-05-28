@@ -9,24 +9,28 @@ managed:
   disable:
     # 구글 API Protos는 자동 관리 제외
     - module: buf.build/googleapis/googleapis
+    # protos/datablock/v1 경로의 .proto 파일들에 대해서는
+    # go_package 파일 옵션에 대한 관리 모드 수정을 비활성화
+    - path: protos/datablock/v1
+      file_option: go_package
   override:
     # Go 코드 기본 출력 경로 설정
-    - file_option: go_package_prefix
-      value: github.com/seoyhaein/api-protos/gen/go
+    #- file_option: go_package_prefix
+    #  value: github.com/seoyhaein/api-protos/gen/go
     # C# 네임스페이스 기본값 설정
-    - file_option: csharp_namespace
-      value: SeoyHaeIn.ApiProtos.Gen.CSharp
+    #- file_option: csharp_namespace
+    #  value: SeoyHaeIn.ApiProtos.Gen.CSharp
 
 # 플러그인 정의
 plugins:
   # Go 메시지 타입 생성
-  - remote: buf.build/protocolbuffers/go:v1.33.0
+  - remote: buf.build/protocolbuffers/go:v1.36.6
     out: gen/go
     opt:
       - paths=source_relative
 
   # Go gRPC 서비스 스텁 생성
-  - local: protoc-gen-go-grpc
+  - local: buf.build/grpc/go:v1.5.1
     out: gen/go
     opt:
       - paths=source_relative
@@ -39,5 +43,5 @@ plugins:
 # 입력 디렉터리 설정 (필요한 모듈별로 추가)
 inputs:
   - directory: protos/datablock/v1
-  # 다른 모듈이 있으면 여기에 추가
-  # - directory: protos/anothermodule/v1
+  - directory: protos/syncfolders/v1
+
