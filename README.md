@@ -21,3 +21,6 @@ buf push
 - F1 누르면 buf lint 실행.
 
 - check https://buf.build/seoyhaein
+
+### TODO
+- 일단 마무리 하고, 이제 실제적인 코딩 작업에 들어가자.
