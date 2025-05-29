@@ -1,0 +1,6 @@
+go 1.24.0
+
+use (
+	./gen/go/datablock/ichthys/v1
+	./gen/go/syncfolders/ichthys/v1
+)

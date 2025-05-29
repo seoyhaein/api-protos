@@ -8,6 +8,7 @@ buf build \
 
 echo "🔄 buf generate"
 
+# 서비스가 생길때마다 여기에 추가 해야함
 # 1) datablock 서비스만
 buf generate . \
   --template buf.gen.yaml \
