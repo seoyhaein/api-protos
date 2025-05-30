@@ -352,8 +352,8 @@ const file_ichthys_v1_datablock_service_proto_rawDesc = "" +
 	"\tno_update\x18\x02 \x01(\v2\x16.google.protobuf.EmptyH\x00R\bnoUpdateB\t\n" +
 	"\apayload2k\n" +
 	"\x10DataBlockService\x12W\n" +
-	"\x0eFetchDataBlock\x12!.ichthys.v1.FetchDataBlockRequest\x1a\".ichthys.v1.FetchDataBlockResponseB\xb8\x01\n" +
-	"\x0ecom.ichthys.v1B\x15DatablockServiceProtoP\x01ZFgithub.com/seoyhaein/api-protos/protos/datablock/icthys/v1;datablockv1\xa2\x02\x03IXX\xaa\x02\n" +
+	"\x0eFetchDataBlock\x12!.ichthys.v1.FetchDataBlockRequest\x1a\".ichthys.v1.FetchDataBlockResponseB\xb9\x01\n" +
+	"\x0ecom.ichthys.v1B\x15DatablockServiceProtoP\x01ZGgithub.com/seoyhaein/api-protos/protos/datablock/ichthys/v1;datablockv1\xa2\x02\x03IXX\xaa\x02\n" +
 	"Ichthys.V1\xca\x02\n" +
 	"Ichthys\\V1\xe2\x02\x16Ichthys\\V1\\GPBMetadata\xea\x02\vIchthys::V1b\x06proto3"
 
