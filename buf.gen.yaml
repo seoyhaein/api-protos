@@ -18,7 +18,7 @@ managed:
     - path: protos/syncfolders/ichthys/v1
       file_option: go_package
 
-  override:
+ # override:
     # 필요한 경우 여기에 file_option 오버라이드 설정
     # - file_option: go_package_prefix
     #   value: github.com/yourorg/api-protos/gen/go
