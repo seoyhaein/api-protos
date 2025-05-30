@@ -2,7 +2,7 @@ syntax = "proto3";
 
 package ichthys.v1;
 
-option go_package = "github.com/seoyhaein/api-protos/protos/datablock/icthys/v1;datablockv1";
+option go_package = "github.com/seoyhaein/api-protos/protos/datablock/ichthys/v1;datablockv1";
 
 import "google/protobuf/timestamp.proto";
 import "google/protobuf/empty.proto";
