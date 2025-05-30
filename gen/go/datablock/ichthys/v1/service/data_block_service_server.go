@@ -46,6 +46,6 @@ func (s *dataBlockServiceServerImpl) GetDataBlock(ctx context.Context, in *pb.Fe
 	}, nil
 }
 
-func RegisterDataBlockService(s *grpc.Server, h DataBlockHandler) {
+func RegisterDataBlockServiceServer(s *grpc.Server, h DataBlockHandler) {
 	pb.RegisterDataBlockServiceServer(s, NewDataBlockServiceServer(h))
 }
