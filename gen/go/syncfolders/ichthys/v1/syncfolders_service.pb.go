@@ -124,7 +124,7 @@ const file_ichthys_v1_syncfolders_service_proto_rawDesc = "" +
 	"\aupdated\x18\x01 \x01(\bR\aupdated2d\n" +
 	"\x12SyncFoldersService\x12N\n" +
 	"\vSyncFolders\x12\x1e.ichthys.v1.SyncFoldersRequest\x1a\x1f.ichthys.v1.SyncFoldersResponseB\xbf\x01\n" +
-	"\x0ecom.ichthys.v1B\x17SyncfoldersServiceProtoP\x01ZKgithub.com/seoyhaein/api-protos/protos/syncfolders/ichthys/v1;syncfoldersv1\xa2\x02\x03IXX\xaa\x02\n" +
+	"\x0ecom.ichthys.v1B\x17SyncfoldersServiceProtoP\x01ZKgithub.com/seoyhaein/api-protos/gen/go/syncfolders/ichthys/v1;syncfoldersv1\xa2\x02\x03IXX\xaa\x02\n" +
 	"Ichthys.V1\xca\x02\n" +
 	"Ichthys\\V1\xe2\x02\x16Ichthys\\V1\\GPBMetadata\xea\x02\vIchthys::V1b\x06proto3"
 
