@@ -1,4 +1,4 @@
-module github.com/seoyhaein/api-protos/gen/go/syncfolders/ichthys/v1
+module github.com/seoyhaein/api-protos/gen/go/syncfolders/ichthys
 
 go 1.24.0
 

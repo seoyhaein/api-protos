@@ -19,7 +19,7 @@ import (
 const _ = grpc.SupportPackageIsVersion9
 
 const (
-	SyncFoldersService_SyncFolders_FullMethodName = "/ichthys.v1.SyncFoldersService/SyncFolders"
+	SyncFoldersService_SyncFolders_FullMethodName = "/ichthys.SyncFoldersService/SyncFolders"
 )
 
 // SyncFoldersServiceClient is the client API for SyncFoldersService service.
@@ -110,7 +110,7 @@ func _SyncFoldersService_SyncFolders_Handler(srv interface{}, ctx context.Contex
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
 var SyncFoldersService_ServiceDesc = grpc.ServiceDesc{
-	ServiceName: "ichthys.v1.SyncFoldersService",
+	ServiceName: "ichthys.SyncFoldersService",
 	HandlerType: (*SyncFoldersServiceServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{

@@ -16,13 +16,15 @@ managed:
 # syncfolders 전용 플러그인
 plugins:
   - remote: buf.build/protocolbuffers/go:v1.36.6
-    out: gen/go/syncfolders
+    out: gen/go/syncfolders/ichthys
     opt:
-      - paths=source_relative
+      - paths=import
+      - module=github.com/seoyhaein/api-protos/gen/go/syncfolders/ichthys
   - remote: buf.build/grpc/go:v1.5.1
-    out: gen/go/syncfolders
+    out: gen/go/syncfolders/ichthys
     opt:
-      - paths=source_relative
+      - paths=import
+      - module=github.com/seoyhaein/api-protos/gen/go/syncfolders/ichthys
 
 # 입력 디렉터리
 inputs:

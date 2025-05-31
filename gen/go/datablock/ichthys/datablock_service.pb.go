@@ -326,36 +326,33 @@ var File_ichthys_v1_datablock_service_proto protoreflect.FileDescriptor
 
 const file_ichthys_v1_datablock_service_proto_rawDesc = "" +
 	"\n" +
-	"\"ichthys/v1/datablock_service.proto\x12\n" +
-	"ichthys.v1\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x1bgoogle/protobuf/empty.proto\x1a\x1fgoogle/api/field_behavior.proto\"r\n" +
+	"\"ichthys/v1/datablock_service.proto\x12\aichthys\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x1bgoogle/protobuf/empty.proto\x1a\x1fgoogle/api/field_behavior.proto\"o\n" +
 	"\tFileBlock\x12\x19\n" +
 	"\bblock_id\x18\x01 \x01(\tR\ablockId\x12%\n" +
-	"\x0ecolumn_headers\x18\x02 \x03(\tR\rcolumnHeaders\x12#\n" +
-	"\x04rows\x18\x03 \x03(\v2\x0f.ichthys.v1.RowR\x04rows\"\x90\x01\n" +
+	"\x0ecolumn_headers\x18\x02 \x03(\tR\rcolumnHeaders\x12 \n" +
+	"\x04rows\x18\x03 \x03(\v2\f.ichthys.RowR\x04rows\"\x8d\x01\n" +
 	"\x03Row\x12\x1d\n" +
 	"\n" +
-	"row_number\x18\x01 \x01(\x05R\trowNumber\x120\n" +
-	"\x05cells\x18\x02 \x03(\v2\x1a.ichthys.v1.Row.CellsEntryR\x05cells\x1a8\n" +
+	"row_number\x18\x01 \x01(\x05R\trowNumber\x12-\n" +
+	"\x05cells\x18\x02 \x03(\v2\x17.ichthys.Row.CellsEntryR\x05cells\x1a8\n" +
 	"\n" +
 	"CellsEntry\x12\x10\n" +
 	"\x03key\x18\x01 \x01(\tR\x03key\x12\x14\n" +
-	"\x05value\x18\x02 \x01(\tR\x05value:\x028\x01\"u\n" +
+	"\x05value\x18\x02 \x01(\tR\x05value:\x028\x01\"r\n" +
 	"\tDataBlock\x129\n" +
 	"\n" +
-	"updated_at\x18\x01 \x01(\v2\x1a.google.protobuf.TimestampR\tupdatedAt\x12-\n" +
-	"\x06blocks\x18\x02 \x03(\v2\x15.ichthys.v1.FileBlockR\x06blocks\"d\n" +
+	"updated_at\x18\x01 \x01(\v2\x1a.google.protobuf.TimestampR\tupdatedAt\x12*\n" +
+	"\x06blocks\x18\x02 \x03(\v2\x12.ichthys.FileBlockR\x06blocks\"d\n" +
 	"\x15FetchDataBlockRequest\x12K\n" +
-	"\x11if_modified_since\x18\x01 \x01(\v2\x1a.google.protobuf.TimestampB\x03\xe0A\x01R\x0fifModifiedSince\"\x92\x01\n" +
-	"\x16FetchDataBlockResponse\x126\n" +
+	"\x11if_modified_since\x18\x01 \x01(\v2\x1a.google.protobuf.TimestampB\x03\xe0A\x01R\x0fifModifiedSince\"\x8f\x01\n" +
+	"\x16FetchDataBlockResponse\x123\n" +
 	"\n" +
-	"data_block\x18\x01 \x01(\v2\x15.ichthys.v1.DataBlockH\x00R\tdataBlock\x125\n" +
+	"data_block\x18\x01 \x01(\v2\x12.ichthys.DataBlockH\x00R\tdataBlock\x125\n" +
 	"\tno_update\x18\x02 \x01(\v2\x16.google.protobuf.EmptyH\x00R\bnoUpdateB\t\n" +
-	"\apayload2k\n" +
-	"\x10DataBlockService\x12W\n" +
-	"\x0eFetchDataBlock\x12!.ichthys.v1.FetchDataBlockRequest\x1a\".ichthys.v1.FetchDataBlockResponseB\xb9\x01\n" +
-	"\x0ecom.ichthys.v1B\x15DatablockServiceProtoP\x01ZGgithub.com/seoyhaein/api-protos/gen/go/datablock/ichthys/v1;datablockv1\xa2\x02\x03IXX\xaa\x02\n" +
-	"Ichthys.V1\xca\x02\n" +
-	"Ichthys\\V1\xe2\x02\x16Ichthys\\V1\\GPBMetadata\xea\x02\vIchthys::V1b\x06proto3"
+	"\apayload2e\n" +
+	"\x10DataBlockService\x12Q\n" +
+	"\x0eFetchDataBlock\x12\x1e.ichthys.FetchDataBlockRequest\x1a\x1f.ichthys.FetchDataBlockResponseB\xa6\x01\n" +
+	"\vcom.ichthysB\x15DatablockServiceProtoP\x01ZDgithub.com/seoyhaein/api-protos/gen/go/datablock/ichthys;datablockv1\xa2\x02\x03IXX\xaa\x02\aIchthys\xca\x02\aIchthys\xe2\x02\x13Ichthys\\GPBMetadata\xea\x02\aIchthysb\x06proto3"
 
 var (
 	file_ichthys_v1_datablock_service_proto_rawDescOnce sync.Once
@@ -371,25 +368,25 @@ func file_ichthys_v1_datablock_service_proto_rawDescGZIP() []byte {
 
 var file_ichthys_v1_datablock_service_proto_msgTypes = make([]protoimpl.MessageInfo, 6)
 var file_ichthys_v1_datablock_service_proto_goTypes = []any{
-	(*FileBlock)(nil),              // 0: ichthys.v1.FileBlock
-	(*Row)(nil),                    // 1: ichthys.v1.Row
-	(*DataBlock)(nil),              // 2: ichthys.v1.DataBlock
-	(*FetchDataBlockRequest)(nil),  // 3: ichthys.v1.FetchDataBlockRequest
-	(*FetchDataBlockResponse)(nil), // 4: ichthys.v1.FetchDataBlockResponse
-	nil,                            // 5: ichthys.v1.Row.CellsEntry
+	(*FileBlock)(nil),              // 0: ichthys.FileBlock
+	(*Row)(nil),                    // 1: ichthys.Row
+	(*DataBlock)(nil),              // 2: ichthys.DataBlock
+	(*FetchDataBlockRequest)(nil),  // 3: ichthys.FetchDataBlockRequest
+	(*FetchDataBlockResponse)(nil), // 4: ichthys.FetchDataBlockResponse
+	nil,                            // 5: ichthys.Row.CellsEntry
 	(*timestamppb.Timestamp)(nil),  // 6: google.protobuf.Timestamp
 	(*emptypb.Empty)(nil),          // 7: google.protobuf.Empty
 }
 var file_ichthys_v1_datablock_service_proto_depIdxs = []int32{
-	1, // 0: ichthys.v1.FileBlock.rows:type_name -> ichthys.v1.Row
-	5, // 1: ichthys.v1.Row.cells:type_name -> ichthys.v1.Row.CellsEntry
-	6, // 2: ichthys.v1.DataBlock.updated_at:type_name -> google.protobuf.Timestamp
-	0, // 3: ichthys.v1.DataBlock.blocks:type_name -> ichthys.v1.FileBlock
-	6, // 4: ichthys.v1.FetchDataBlockRequest.if_modified_since:type_name -> google.protobuf.Timestamp
-	2, // 5: ichthys.v1.FetchDataBlockResponse.data_block:type_name -> ichthys.v1.DataBlock
-	7, // 6: ichthys.v1.FetchDataBlockResponse.no_update:type_name -> google.protobuf.Empty
-	3, // 7: ichthys.v1.DataBlockService.FetchDataBlock:input_type -> ichthys.v1.FetchDataBlockRequest
-	4, // 8: ichthys.v1.DataBlockService.FetchDataBlock:output_type -> ichthys.v1.FetchDataBlockResponse
+	1, // 0: ichthys.FileBlock.rows:type_name -> ichthys.Row
+	5, // 1: ichthys.Row.cells:type_name -> ichthys.Row.CellsEntry
+	6, // 2: ichthys.DataBlock.updated_at:type_name -> google.protobuf.Timestamp
+	0, // 3: ichthys.DataBlock.blocks:type_name -> ichthys.FileBlock
+	6, // 4: ichthys.FetchDataBlockRequest.if_modified_since:type_name -> google.protobuf.Timestamp
+	2, // 5: ichthys.FetchDataBlockResponse.data_block:type_name -> ichthys.DataBlock
+	7, // 6: ichthys.FetchDataBlockResponse.no_update:type_name -> google.protobuf.Empty
+	3, // 7: ichthys.DataBlockService.FetchDataBlock:input_type -> ichthys.FetchDataBlockRequest
+	4, // 8: ichthys.DataBlockService.FetchDataBlock:output_type -> ichthys.FetchDataBlockResponse
 	8, // [8:9] is the sub-list for method output_type
 	7, // [7:8] is the sub-list for method input_type
 	7, // [7:7] is the sub-list for extension type_name

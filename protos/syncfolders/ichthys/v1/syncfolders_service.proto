@@ -1,8 +1,8 @@
 syntax = "proto3";
 
-package ichthys.v1;
+package ichthys;
 
-option go_package = "github.com/seoyhaein/api-protos/gen/go/syncfolders/ichthys/v1;syncfoldersv1";
+option go_package = "github.com/seoyhaein/api-protos/gen/go/syncfolders/ichthys;syncfoldersv1";
 
 //////////////////////////////////////
 // 폴더 정보 저장 관련 메시지 및 서비스
