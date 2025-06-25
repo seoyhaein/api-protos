@@ -6,7 +6,10 @@
     "context": ".."
   },
   "workspaceMount": "source=${localWorkspaceFolder},target=/app,type=bind,consistency=cached",
-  "workspaceFolder": "/app",
+  "workspaceFolder": "/app",  
+  "containerEnv": {
+    "BUF_TOKEN": "${localEnv:BUF_TOKEN}"
+  },
   "customizations": {
     "vscode": {
       "extensions": [

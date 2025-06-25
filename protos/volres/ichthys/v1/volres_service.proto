@@ -1,0 +1,41 @@
+syntax = "proto3";
+
+package ichthys;
+
+option go_package = "github.com/seoyhaein/api-protos/gen/go/volres/ichthys;volresv1";
+
+// 볼륨 메타데이터 + (선택적) 내부 트리 전체
+message VolumeManifest {
+  // — 공통 메타데이터 —
+  string volume_ref   = 1;            // 볼륨 식별자
+  string display_name = 2;            // UI에 표시할 이름
+  string description  = 3;            // 설명 (optional)
+  string format       = 4;            // 형식 (예: FASTA, VCF)
+  uint64 total_size   = 5;            // 전체 크기 (bytes)
+  uint64 record_count = 6;            // 레코드 수 (optional)
+  string created_at   = 7;            // 생성 시각 (RFC3339)
+  map<string,string> annotations = 8; // 추가 도메인 속성 (예: species)
+
+  // — 상세 정보(파일/디렉터리 트리) —
+  // ListVolumes 같은 RPC에서는 이 필드를 비워서 보내고,
+  // GetVolumeDetails 같은 RPC에서만 root를 채워 줍니다.
+  VolumeResource root = 9;
+}
+
+message VolumeResource {
+  string id              = 1;  // SHA256 digest 등 고유 ID
+  string basename        = 2;  // 파일/디렉터리 이름
+  string full_path        = 3;  // 루트 기준 상대경로
+  bool   is_directory     = 4;  // 디렉터리 여부
+  uint64 size            = 5;  // 파일 크기 (bytes, 디렉터리는 0)
+  string checksum        = 6;  // sha256 체크섬 (파일만)
+  int64  mod_time         = 7;  // 수정 시각 (Unix epoch)
+  map<string,string> attrs        = 8;  // 추가 파일 속성
+  repeated VolumeResource children = 9; // 하위 리소스들
+}
+
+// 여러 개의 VolumeManifest를 한 번에 담는 메시지
+message VolumeList {
+  // 담을 볼륨들을 반복 필드로 선언
+  repeated VolumeManifest volumes = 1;
+}

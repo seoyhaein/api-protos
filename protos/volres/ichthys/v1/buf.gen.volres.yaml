@@ -1,0 +1,31 @@
+version: v2
+
+# go.mod 파일을 지우면 않됨으로 false
+clean: false
+
+# 자동 go_package 관리
+managed:
+  enabled: true
+  disable:
+    # 구글 API Protos 제외
+    - module: buf.build/googleapis/googleapis
+    # datablock 서비스만 자동 관리 제외
+    - path: protos/volres/ichthys/v1
+      file_option: go_package
+
+# volres 전용 플러그인
+plugins:
+  - remote: buf.build/protocolbuffers/go:v1.36.6
+    out: gen/go/volres/ichthys
+    opt:
+      - paths=import
+      - module=github.com/seoyhaein/api-protos/gen/go/volres/ichthys
+  - remote: buf.build/grpc/go:v1.5.1
+    out: gen/go/datablock/ichthys
+    opt:
+      - paths=import
+      - module=github.com/seoyhaein/api-protos/gen/go/volres/ichthys
+
+# 입력 디렉터리
+inputs:
+  - directory: protos/volres/ichthys/v1

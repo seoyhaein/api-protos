@@ -5,6 +5,8 @@ modules:
     name: buf.build/seoyhaein/datablock 
   - path: protos/syncfolders
     name: buf.build/seoyhaein/syncfolders 
+  - path: protos/volres
+    name: buf.build/seoyhaein/volres
   
 # 외부 의존성(googleapis)을 deps로 선언
 deps:

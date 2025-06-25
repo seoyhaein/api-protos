@@ -26,6 +26,10 @@ func NewDataBlockServiceServer(h DataBlockHandler) pb.DataBlockServiceServer {
 	return &dataBlockServiceServerImpl{handler: h}
 }
 
+func RegisterDataBlockServiceServer(service *grpc.Server, h DataBlockHandler) {
+	pb.RegisterDataBlockServiceServer(service, NewDataBlockServiceServer(h))
+}
+
 func (s *dataBlockServiceServerImpl) GetDataBlock(ctx context.Context, in *pb.FetchDataBlockRequest) (*pb.FetchDataBlockResponse, error) {
 	// TODO 위힘 함. 추가적인 설명 달아 놓을 것
 	data, err := s.handler.GetDataBlock(ctx, in.IfModifiedSince)
@@ -49,10 +53,6 @@ func (s *dataBlockServiceServerImpl) GetDataBlock(ctx context.Context, in *pb.Fe
 			DataBlock: data,
 		},
 	}, nil
-}
-
-func RegisterDataBlockServiceServer(s *grpc.Server, h DataBlockHandler) {
-	pb.RegisterDataBlockServiceServer(s, NewDataBlockServiceServer(h))
 }
 
 // SaveProtoToFile proto.Message → 바이너리 파일로 저장
