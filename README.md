@@ -44,4 +44,11 @@ buf push
 - go get github.com/seoyhaein/api-protos/gen/go/syncfolders/ichthys@v1.0.0  
 
 - 외부 공개 아닌 부분들은 즉, 일반적인 변경들은 그냥 커밋해서 푸시하면 됨.  
-- https://g.co/gemini/share/81566349de9a 대화 내용 정리 해야함.  
+- https://g.co/gemini/share/81566349de9a 대화 내용 정리 해야함. 
+
+### go mod 적용하는 방법, 반드시 이렇게 해야 하고 잘못하면 꼬임. 약간 트릭을 씀.
+- 해당 폴더로 들어가서 "gen/go/tool/ichthys" <- (여기는 pb.go 파일들이 생기는 폴더임) 여기에서 go mod init 을 해줘야 하는데, 모듈이름을 넣어주어야 함.  
+- "go mod init github.com/seoyhaein/api-protos/gen/go/tool/ichthys" <- 이런 식으로 해줘야 함. 그럼 go mod 모듈이 디렉토리에 맞게 낳옴.   
+- go.mod 파일을 보면, module github.com/seoyhaein/api-protos/gen/go/tool/ichthys <- 이런 식으로 되어 있음. 이게 정상임.  
+- 여기서 또 중요한데, 이제 해당 프로젝트에 깃 테그를 달아줘야 함.  
+- 루트로 옮겨가서 즉 .git 이 있는 폴더로 이동해서. 커밋하고 태그를 달아줘야 하는데 태그 이름을 잘 해줘야 함.  

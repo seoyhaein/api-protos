@@ -24,4 +24,9 @@ buf generate . \
   --template protos/volres/ichthys/v1/buf.gen.volres.yaml \
   --path protos/volres/ichthys/v1/volres_service.proto
 
+# 4) tool 서비스만
+  buf generate . \
+    --template protos/tool/ichthys/v1/buf.gen.tool.yaml \
+    --path protos/tool/ichthys/v1/tool_service.proto
+
 echo "✅ 완료!"

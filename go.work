@@ -4,4 +4,5 @@ use (
 	./gen/go/datablock/ichthys
 	./gen/go/syncfolders/ichthys
 	./gen/go/volres/ichthys
+	./gen/go/tool/ichthys
 )
