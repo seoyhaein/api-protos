@@ -34,9 +34,10 @@ type VolumeManifest struct {
 	CreatedAt   string            `protobuf:"bytes,7,opt,name=created_at,json=createdAt,proto3" json:"created_at,omitempty"`                                                              // 생성 시각 (RFC3339)
 	Annotations map[string]string `protobuf:"bytes,8,rep,name=annotations,proto3" json:"annotations,omitempty" protobuf_key:"bytes,1,opt,name=key" protobuf_val:"bytes,2,opt,name=value"` // 추가 도메인 속성 (예: species)
 	// — 상세 정보(파일/디렉터리 트리) —
-	// ListVolumes 같은 RPC에서는 이 필드를 비워서 보내고,
-	// GetVolumeDetails 같은 RPC에서만 root를 채워 줍니다.
+	// ListVolumes 같은 RPC 에서는 이 필드를 비워서 보내고,
+	// GetVolumeDetails 같은 RPC 에서만 root 를 채워 줍.
 	Root          *VolumeResource `protobuf:"bytes,9,opt,name=root,proto3" json:"root,omitempty"`
+	LayerDigest   string          `protobuf:"bytes,10,opt,name=layer_digest,json=layerDigest,proto3" json:"layer_digest,omitempty"` // 새로 추가: tarball/.tar.gz 파일 혹은 OCI 레이어의 sha256:<hex>;
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -132,6 +133,13 @@ func (x *VolumeManifest) GetRoot() *VolumeResource {
 		return x.Root
 	}
 	return nil
+}
+
+func (x *VolumeManifest) GetLayerDigest() string {
+	if x != nil {
+		return x.LayerDigest
+	}
+	return ""
 }
 
 type VolumeResource struct {
@@ -292,7 +300,7 @@ var File_ichthys_v1_volres_service_proto protoreflect.FileDescriptor
 
 const file_ichthys_v1_volres_service_proto_rawDesc = "" +
 	"\n" +
-	"\x1fichthys/v1/volres_service.proto\x12\aichthys\"\xa6\x03\n" +
+	"\x1fichthys/v1/volres_service.proto\x12\aichthys\"\xc9\x03\n" +
 	"\x0eVolumeManifest\x12\x1d\n" +
 	"\n" +
 	"volume_ref\x18\x01 \x01(\tR\tvolumeRef\x12!\n" +
@@ -305,7 +313,9 @@ const file_ichthys_v1_volres_service_proto_rawDesc = "" +
 	"\n" +
 	"created_at\x18\a \x01(\tR\tcreatedAt\x12J\n" +
 	"\vannotations\x18\b \x03(\v2(.ichthys.VolumeManifest.AnnotationsEntryR\vannotations\x12+\n" +
-	"\x04root\x18\t \x01(\v2\x17.ichthys.VolumeResourceR\x04root\x1a>\n" +
+	"\x04root\x18\t \x01(\v2\x17.ichthys.VolumeResourceR\x04root\x12!\n" +
+	"\flayer_digest\x18\n" +
+	" \x01(\tR\vlayerDigest\x1a>\n" +
 	"\x10AnnotationsEntry\x12\x10\n" +
 	"\x03key\x18\x01 \x01(\tR\x03key\x12\x14\n" +
 	"\x05value\x18\x02 \x01(\tR\x05value:\x028\x01\"\xf0\x02\n" +
