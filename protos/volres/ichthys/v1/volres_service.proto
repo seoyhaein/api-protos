@@ -20,6 +20,7 @@ message VolumeManifest {
   // ListVolumes 같은 RPC 에서는 이 필드를 비워서 보내고,
   // GetVolumeDetails 같은 RPC 에서만 root 를 채워 줍.
   VolumeResource root = 9;
+  string layer_digest = 10;   // 새로 추가: tarball/.tar.gz 파일 혹은 OCI 레이어의 sha256:<hex>;
 }
 
 message VolumeResource {
