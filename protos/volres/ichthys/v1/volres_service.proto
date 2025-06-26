@@ -17,8 +17,8 @@ message VolumeManifest {
   map<string,string> annotations = 8; // 추가 도메인 속성 (예: species)
 
   // — 상세 정보(파일/디렉터리 트리) —
-  // ListVolumes 같은 RPC에서는 이 필드를 비워서 보내고,
-  // GetVolumeDetails 같은 RPC에서만 root를 채워 줍니다.
+  // ListVolumes 같은 RPC 에서는 이 필드를 비워서 보내고,
+  // GetVolumeDetails 같은 RPC 에서만 root 를 채워 줍.
   VolumeResource root = 9;
 }
 
