@@ -21,23 +21,18 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
-// 볼륨 메타데이터 + (선택적) 내부 트리 전체
+// 볼륨 메타데이터 + 파일/디렉토리 트리 전체
 type VolumeManifest struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	// — 공통 메타데이터 —
-	VolumeRef   string            `protobuf:"bytes,1,opt,name=volume_ref,json=volumeRef,proto3" json:"volume_ref,omitempty"`                                                              // 볼륨 식별자
-	DisplayName string            `protobuf:"bytes,2,opt,name=display_name,json=displayName,proto3" json:"display_name,omitempty"`                                                        // UI에 표시할 이름
-	Description string            `protobuf:"bytes,3,opt,name=description,proto3" json:"description,omitempty"`                                                                           // 설명 (optional)
-	Format      string            `protobuf:"bytes,4,opt,name=format,proto3" json:"format,omitempty"`                                                                                     // 형식 (예: FASTA, VCF)
-	TotalSize   uint64            `protobuf:"varint,5,opt,name=total_size,json=totalSize,proto3" json:"total_size,omitempty"`                                                             // 전체 크기 (bytes)
-	RecordCount uint64            `protobuf:"varint,6,opt,name=record_count,json=recordCount,proto3" json:"record_count,omitempty"`                                                       // 레코드 수 (optional)
-	CreatedAt   string            `protobuf:"bytes,7,opt,name=created_at,json=createdAt,proto3" json:"created_at,omitempty"`                                                              // 생성 시각 (RFC3339)
-	Annotations map[string]string `protobuf:"bytes,8,rep,name=annotations,proto3" json:"annotations,omitempty" protobuf_key:"bytes,1,opt,name=key" protobuf_val:"bytes,2,opt,name=value"` // 추가 도메인 속성 (예: species)
-	// — 상세 정보(파일/디렉터리 트리) —
-	// ListVolumes 같은 RPC 에서는 이 필드를 비워서 보내고,
-	// GetVolumeDetails 같은 RPC 에서만 root 를 채워 줍.
-	Root          *VolumeResource `protobuf:"bytes,9,opt,name=root,proto3" json:"root,omitempty"`
-	LayerDigest   string          `protobuf:"bytes,10,opt,name=layer_digest,json=layerDigest,proto3" json:"layer_digest,omitempty"` // 새로 추가: tarball/.tar.gz 파일 혹은 OCI 레이어의 sha256:<hex>;
+	VolumeRef     string            `protobuf:"bytes,1,opt,name=volume_ref,json=volumeRef,proto3" json:"volume_ref,omitempty"`                                                              // OCI 아티팩트(레이어 또는 매니페스트) Digest (예: sha256:<hex>)
+	DisplayName   string            `protobuf:"bytes,2,opt,name=display_name,json=displayName,proto3" json:"display_name,omitempty"`                                                        // UI에 표시할 이름
+	Description   string            `protobuf:"bytes,3,opt,name=description,proto3" json:"description,omitempty"`                                                                           // 설명 (optional)
+	TotalSize     uint64            `protobuf:"varint,4,opt,name=total_size,json=totalSize,proto3" json:"total_size,omitempty"`                                                             // 전체 크기 (bytes)
+	RecordCount   uint64            `protobuf:"varint,5,opt,name=record_count,json=recordCount,proto3" json:"record_count,omitempty"`                                                       // 레코드 수 (optional)
+	ModTime       int64             `protobuf:"varint,6,opt,name=mod_time,json=modTime,proto3" json:"mod_time,omitempty"`                                                                   // 최종 수정 시각 (Unix epoch)
+	Annotations   map[string]string `protobuf:"bytes,7,rep,name=annotations,proto3" json:"annotations,omitempty" protobuf_key:"bytes,1,opt,name=key" protobuf_val:"bytes,2,opt,name=value"` // 추가 도메인 속성 (예: species)
+	Root          *VolumeResource   `protobuf:"bytes,8,opt,name=root,proto3" json:"root,omitempty"`                                                                                         // 볼륨의 루트 리소스 트리 (GetVolumeDetails 시에만 채움)
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -93,13 +88,6 @@ func (x *VolumeManifest) GetDescription() string {
 	return ""
 }
 
-func (x *VolumeManifest) GetFormat() string {
-	if x != nil {
-		return x.Format
-	}
-	return ""
-}
-
 func (x *VolumeManifest) GetTotalSize() uint64 {
 	if x != nil {
 		return x.TotalSize
@@ -114,11 +102,11 @@ func (x *VolumeManifest) GetRecordCount() uint64 {
 	return 0
 }
 
-func (x *VolumeManifest) GetCreatedAt() string {
+func (x *VolumeManifest) GetModTime() int64 {
 	if x != nil {
-		return x.CreatedAt
+		return x.ModTime
 	}
-	return ""
+	return 0
 }
 
 func (x *VolumeManifest) GetAnnotations() map[string]string {
@@ -135,24 +123,14 @@ func (x *VolumeManifest) GetRoot() *VolumeResource {
 	return nil
 }
 
-func (x *VolumeManifest) GetLayerDigest() string {
-	if x != nil {
-		return x.LayerDigest
-	}
-	return ""
-}
-
+// 파일/디렉터리 단위 리소스 정보
 type VolumeResource struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	Id            string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`                                                                                 // SHA256 digest 등 고유 ID
-	Basename      string                 `protobuf:"bytes,2,opt,name=basename,proto3" json:"basename,omitempty"`                                                                     // 파일/디렉터리 이름
-	FullPath      string                 `protobuf:"bytes,3,opt,name=full_path,json=fullPath,proto3" json:"full_path,omitempty"`                                                     // 루트 기준 상대경로
-	IsDirectory   bool                   `protobuf:"varint,4,opt,name=is_directory,json=isDirectory,proto3" json:"is_directory,omitempty"`                                           // 디렉터리 여부
-	Size          uint64                 `protobuf:"varint,5,opt,name=size,proto3" json:"size,omitempty"`                                                                            // 파일 크기 (bytes, 디렉터리는 0)
-	Checksum      string                 `protobuf:"bytes,6,opt,name=checksum,proto3" json:"checksum,omitempty"`                                                                     // sha256 체크섬 (파일만)
-	ModTime       int64                  `protobuf:"varint,7,opt,name=mod_time,json=modTime,proto3" json:"mod_time,omitempty"`                                                       // 수정 시각 (Unix epoch)
-	Attrs         map[string]string      `protobuf:"bytes,8,rep,name=attrs,proto3" json:"attrs,omitempty" protobuf_key:"bytes,1,opt,name=key" protobuf_val:"bytes,2,opt,name=value"` // 추가 파일 속성
-	Children      []*VolumeResource      `protobuf:"bytes,9,rep,name=children,proto3" json:"children,omitempty"`                                                                     // 하위 리소스들
+	Basename      string                 `protobuf:"bytes,1,opt,name=basename,proto3" json:"basename,omitempty"`                           // 파일/디렉터리 이름
+	FullPath      string                 `protobuf:"bytes,2,opt,name=full_path,json=fullPath,proto3" json:"full_path,omitempty"`           // 루트 기준 상대경로
+	IsDirectory   bool                   `protobuf:"varint,3,opt,name=is_directory,json=isDirectory,proto3" json:"is_directory,omitempty"` // 디렉터리 여부
+	Size          uint64                 `protobuf:"varint,4,opt,name=size,proto3" json:"size,omitempty"`                                  // 파일 크기 (bytes, 디렉터리는 0)
+	Children      []*VolumeResource      `protobuf:"bytes,5,rep,name=children,proto3" json:"children,omitempty"`                           // 하위 리소스들 (디렉터리인 경우)
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -187,13 +165,6 @@ func (*VolumeResource) Descriptor() ([]byte, []int) {
 	return file_ichthys_v1_volres_service_proto_rawDescGZIP(), []int{1}
 }
 
-func (x *VolumeResource) GetId() string {
-	if x != nil {
-		return x.Id
-	}
-	return ""
-}
-
 func (x *VolumeResource) GetBasename() string {
 	if x != nil {
 		return x.Basename
@@ -222,27 +193,6 @@ func (x *VolumeResource) GetSize() uint64 {
 	return 0
 }
 
-func (x *VolumeResource) GetChecksum() string {
-	if x != nil {
-		return x.Checksum
-	}
-	return ""
-}
-
-func (x *VolumeResource) GetModTime() int64 {
-	if x != nil {
-		return x.ModTime
-	}
-	return 0
-}
-
-func (x *VolumeResource) GetAttrs() map[string]string {
-	if x != nil {
-		return x.Attrs
-	}
-	return nil
-}
-
 func (x *VolumeResource) GetChildren() []*VolumeResource {
 	if x != nil {
 		return x.Children
@@ -250,11 +200,10 @@ func (x *VolumeResource) GetChildren() []*VolumeResource {
 	return nil
 }
 
-// 여러 개의 VolumeManifest를 한 번에 담는 메시지
+// 여러 개의 VolumeManifest 를 한 번에 담는 메시지
 type VolumeList struct {
-	state protoimpl.MessageState `protogen:"open.v1"`
-	// 담을 볼륨들을 반복 필드로 선언
-	Volumes       []*VolumeManifest `protobuf:"bytes,1,rep,name=volumes,proto3" json:"volumes,omitempty"`
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Volumes       []*VolumeManifest      `protobuf:"bytes,1,rep,name=volumes,proto3" json:"volumes,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -300,39 +249,27 @@ var File_ichthys_v1_volres_service_proto protoreflect.FileDescriptor
 
 const file_ichthys_v1_volres_service_proto_rawDesc = "" +
 	"\n" +
-	"\x1fichthys/v1/volres_service.proto\x12\aichthys\"\xc9\x03\n" +
+	"\x1fichthys/v1/volres_service.proto\x12\aichthys\"\x8a\x03\n" +
 	"\x0eVolumeManifest\x12\x1d\n" +
 	"\n" +
 	"volume_ref\x18\x01 \x01(\tR\tvolumeRef\x12!\n" +
 	"\fdisplay_name\x18\x02 \x01(\tR\vdisplayName\x12 \n" +
-	"\vdescription\x18\x03 \x01(\tR\vdescription\x12\x16\n" +
-	"\x06format\x18\x04 \x01(\tR\x06format\x12\x1d\n" +
+	"\vdescription\x18\x03 \x01(\tR\vdescription\x12\x1d\n" +
 	"\n" +
-	"total_size\x18\x05 \x01(\x04R\ttotalSize\x12!\n" +
-	"\frecord_count\x18\x06 \x01(\x04R\vrecordCount\x12\x1d\n" +
-	"\n" +
-	"created_at\x18\a \x01(\tR\tcreatedAt\x12J\n" +
-	"\vannotations\x18\b \x03(\v2(.ichthys.VolumeManifest.AnnotationsEntryR\vannotations\x12+\n" +
-	"\x04root\x18\t \x01(\v2\x17.ichthys.VolumeResourceR\x04root\x12!\n" +
-	"\flayer_digest\x18\n" +
-	" \x01(\tR\vlayerDigest\x1a>\n" +
+	"total_size\x18\x04 \x01(\x04R\ttotalSize\x12!\n" +
+	"\frecord_count\x18\x05 \x01(\x04R\vrecordCount\x12\x19\n" +
+	"\bmod_time\x18\x06 \x01(\x03R\amodTime\x12J\n" +
+	"\vannotations\x18\a \x03(\v2(.ichthys.VolumeManifest.AnnotationsEntryR\vannotations\x12+\n" +
+	"\x04root\x18\b \x01(\v2\x17.ichthys.VolumeResourceR\x04root\x1a>\n" +
 	"\x10AnnotationsEntry\x12\x10\n" +
 	"\x03key\x18\x01 \x01(\tR\x03key\x12\x14\n" +
-	"\x05value\x18\x02 \x01(\tR\x05value:\x028\x01\"\xf0\x02\n" +
-	"\x0eVolumeResource\x12\x0e\n" +
-	"\x02id\x18\x01 \x01(\tR\x02id\x12\x1a\n" +
-	"\bbasename\x18\x02 \x01(\tR\bbasename\x12\x1b\n" +
-	"\tfull_path\x18\x03 \x01(\tR\bfullPath\x12!\n" +
-	"\fis_directory\x18\x04 \x01(\bR\visDirectory\x12\x12\n" +
-	"\x04size\x18\x05 \x01(\x04R\x04size\x12\x1a\n" +
-	"\bchecksum\x18\x06 \x01(\tR\bchecksum\x12\x19\n" +
-	"\bmod_time\x18\a \x01(\x03R\amodTime\x128\n" +
-	"\x05attrs\x18\b \x03(\v2\".ichthys.VolumeResource.AttrsEntryR\x05attrs\x123\n" +
-	"\bchildren\x18\t \x03(\v2\x17.ichthys.VolumeResourceR\bchildren\x1a8\n" +
-	"\n" +
-	"AttrsEntry\x12\x10\n" +
-	"\x03key\x18\x01 \x01(\tR\x03key\x12\x14\n" +
-	"\x05value\x18\x02 \x01(\tR\x05value:\x028\x01\"?\n" +
+	"\x05value\x18\x02 \x01(\tR\x05value:\x028\x01\"\xb5\x01\n" +
+	"\x0eVolumeResource\x12\x1a\n" +
+	"\bbasename\x18\x01 \x01(\tR\bbasename\x12\x1b\n" +
+	"\tfull_path\x18\x02 \x01(\tR\bfullPath\x12!\n" +
+	"\fis_directory\x18\x03 \x01(\bR\visDirectory\x12\x12\n" +
+	"\x04size\x18\x04 \x01(\x04R\x04size\x123\n" +
+	"\bchildren\x18\x05 \x03(\v2\x17.ichthys.VolumeResourceR\bchildren\"?\n" +
 	"\n" +
 	"VolumeList\x121\n" +
 	"\avolumes\x18\x01 \x03(\v2\x17.ichthys.VolumeManifestR\avolumesB\x9d\x01\n" +
@@ -350,25 +287,23 @@ func file_ichthys_v1_volres_service_proto_rawDescGZIP() []byte {
 	return file_ichthys_v1_volres_service_proto_rawDescData
 }
 
-var file_ichthys_v1_volres_service_proto_msgTypes = make([]protoimpl.MessageInfo, 5)
+var file_ichthys_v1_volres_service_proto_msgTypes = make([]protoimpl.MessageInfo, 4)
 var file_ichthys_v1_volres_service_proto_goTypes = []any{
 	(*VolumeManifest)(nil), // 0: ichthys.VolumeManifest
 	(*VolumeResource)(nil), // 1: ichthys.VolumeResource
 	(*VolumeList)(nil),     // 2: ichthys.VolumeList
 	nil,                    // 3: ichthys.VolumeManifest.AnnotationsEntry
-	nil,                    // 4: ichthys.VolumeResource.AttrsEntry
 }
 var file_ichthys_v1_volres_service_proto_depIdxs = []int32{
 	3, // 0: ichthys.VolumeManifest.annotations:type_name -> ichthys.VolumeManifest.AnnotationsEntry
 	1, // 1: ichthys.VolumeManifest.root:type_name -> ichthys.VolumeResource
-	4, // 2: ichthys.VolumeResource.attrs:type_name -> ichthys.VolumeResource.AttrsEntry
-	1, // 3: ichthys.VolumeResource.children:type_name -> ichthys.VolumeResource
-	0, // 4: ichthys.VolumeList.volumes:type_name -> ichthys.VolumeManifest
-	5, // [5:5] is the sub-list for method output_type
-	5, // [5:5] is the sub-list for method input_type
-	5, // [5:5] is the sub-list for extension type_name
-	5, // [5:5] is the sub-list for extension extendee
-	0, // [0:5] is the sub-list for field type_name
+	1, // 2: ichthys.VolumeResource.children:type_name -> ichthys.VolumeResource
+	0, // 3: ichthys.VolumeList.volumes:type_name -> ichthys.VolumeManifest
+	4, // [4:4] is the sub-list for method output_type
+	4, // [4:4] is the sub-list for method input_type
+	4, // [4:4] is the sub-list for extension type_name
+	4, // [4:4] is the sub-list for extension extendee
+	0, // [0:4] is the sub-list for field type_name
 }
 
 func init() { file_ichthys_v1_volres_service_proto_init() }
@@ -382,7 +317,7 @@ func file_ichthys_v1_volres_service_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_ichthys_v1_volres_service_proto_rawDesc), len(file_ichthys_v1_volres_service_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   5,
+			NumMessages:   4,
 			NumExtensions: 0,
 			NumServices:   0,
 		},
