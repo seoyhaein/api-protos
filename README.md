@@ -52,3 +52,5 @@ buf push
 - go.mod 파일을 보면, module github.com/seoyhaein/api-protos/gen/go/tool/ichthys <- 이런 식으로 되어 있음. 이게 정상임.  
 - 여기서 또 중요한데, 이제 해당 프로젝트에 깃 테그를 달아줘야 함.  
 - 루트로 옮겨가서 즉 .git 이 있는 폴더로 이동해서. 커밋하고 태그를 달아줘야 하는데 태그 이름을 잘 해줘야 함.  
+- git tag -a "gen/go/tool/ichthys/v1.0.0" -m "dev" 이렇게 태그를 달아줘야함.  
+- git push origin gen/go/tool/ichthys/v1.0.0  
