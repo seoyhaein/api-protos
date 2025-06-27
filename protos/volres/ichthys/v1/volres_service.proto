@@ -4,7 +4,7 @@ package ichthys;
 
 option go_package = "github.com/seoyhaein/api-protos/gen/go/volres/ichthys;volresv1";
 
-// 볼륨 메타데이터 + (선택적) 내부 트리 전체
+// 볼륨 메타데이터 + 파일/디렉토리 트리 전체
 message VolumeManifest {
   // — 공통 메타데이터 —
   string volume_ref   = 1;            // OCI 아티팩트(레이어 또는 매니페스트) Digest (예: sha256:<hex>)
@@ -26,7 +26,7 @@ message VolumeResource {
   repeated VolumeResource children = 5; // 하위 리소스들 (디렉터리인 경우)
 }
 
-// 여러 개의 VolumeManifest를 한 번에 담는 메시지
+// 여러 개의 VolumeManifest 를 한 번에 담는 메시지
 message VolumeList {
   repeated VolumeManifest volumes = 1;
 }
